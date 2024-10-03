@@ -4,10 +4,10 @@ import 'react-before-after-slider-component/dist/build.css';
 
 const Beforeandafter = () => {
   const FIRST_IMAGE = {
-    imageUrl: '/Assets/Card/Header/first.jpg', // Make sure the path is correct
+    imageUrl: '/Assets/Card/Header/hello.jpg', 
   };
   const SECOND_IMAGE = {
-    imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5VupLYqeNeT6UtEb7p7yrriIpXasT9HIAKoxoLqlmapNFQT2jZj_dxI_8mlO1HHTs7A4&usqp=CAU',
+    imageUrl: '/Assets/Card/Header/second.jpg',
   };
 
   const delimiterIconStyles = {
@@ -20,13 +20,26 @@ const Beforeandafter = () => {
 
   return (
     <div className="flex items-center justify-center p-4">
-      <div className="w-96px rounded-lg "> {/* Width and rounded corners applied */}
+      <div className="w-100 rounded-lg">
         <ReactBeforeSliderComponent
           firstImage={FIRST_IMAGE}
           secondImage={SECOND_IMAGE}
           delimiterIconStyles={delimiterIconStyles}
+          style={{
+            height: '1000px', // Height in pixels
+          }}
+          withResizeDivider={false} // Just in case
         />
       </div>
+
+      {/* Add custom CSS styling */}
+      <style jsx>{`
+        .before-after-slider-container img {
+          height: 500px !important;
+          border-radius: 50px 0px 0px 50px !important;
+          object-fit: cover; /* This ensures the image scales properly */
+        }
+      `}</style>
     </div>
   );
 };
