@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import Login from "./Routes/Login.js";
 import Payment from "./Routes/Payment.js";
+import Booking from "./Routes/Booking.js";
 import "dotenv/config";
 
 const app = express();
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
 
 const port = 4000;
 app.use("/", Login);
+app.use("/", Booking);
 app.use("/", Payment);
 
 app.listen(port, () => {

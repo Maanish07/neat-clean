@@ -20,7 +20,7 @@ const Form = ({ price }) => {
 
   const [selectedPlan, setSelectedPlan] = useState(radios[1]); // default plan selection
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [time, setTime] = useState('');
+  const [address, setAddress] = useState('');
   const [date, setDate] = useState('');
 
   const today = new Date().toISOString().split('T')[0]; // for min date
@@ -60,6 +60,7 @@ const Form = ({ price }) => {
           const adminOrderEndpoint = `http://localhost:4000/booking`;
           const orderData = {
             phone: phoneNumber,
+            address : address,
             plan: selectedPlan.name,
             payment_id: response.razorpay_payment_id,
             order_id: response.razorpay_order_id,
@@ -146,7 +147,19 @@ const Form = ({ price }) => {
               />
             </div>
           </div>
-
+          <div>
+            <label className="text-gray-600">Address</label>
+            <div className="relative mt-2 max-w-xs text-gray-500">
+              <input
+                required
+                type="String"
+                placeholder="Your Address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                className="w-full pl-[4.5rem] pr-3 py-2 appearance-none bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+              />
+            </div>
+          </div>
           <div className="relative my-6">
             <input
               id="id-date07"

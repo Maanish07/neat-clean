@@ -76,12 +76,12 @@ export default function Header() {
               
               <li role="none" className="flex items-stretch">
                 <ScrollLink
-                  to="book"
-                  smooth={true}
+                 to="pricing"
+                 smooth={true} 
                   aria-haspopup="false"
                   className="flex items-center text-black gap-2 py-4 transition-colors duration-300 hover:text-emerald-500 focus:text-emerald-600 focus:outline-none focus-visible:outline-none lg:px-8"
                 >
-                  Book
+                  Pricing
                 </ScrollLink>
               </li>
               <li role="none" className="flex items-stretch">

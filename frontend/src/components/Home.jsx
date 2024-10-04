@@ -13,12 +13,13 @@ import Numbers from "./Numbers";
 import Form from "./Form";
 import Beforeandafter from "./Beforeandafter";
 import Rating from "./Rating";
+import Textwithstar from "./Textwithstar";
 
 const Home = () => {
   return (
     <Layout>
       <Heros/>
-      
+      <Textwithstar/>
       <Pricing/>
       <Gallery/>
       <Numbers/>
