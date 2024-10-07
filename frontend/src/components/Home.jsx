@@ -21,11 +21,11 @@ const Home = () => {
       <Heros/>
       <Textwithstar/>
       <Pricing/>
-      <Gallery/>
-      <Numbers/>
+      
+      
       
       <Beforeandafter/>
-      
+      <Numbers/>
      
       
     </Layout>

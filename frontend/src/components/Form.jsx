@@ -18,7 +18,7 @@ const Form = ({ price }) => {
     },
   ];
 
-  const [selectedPlan, setSelectedPlan] = useState(radios[1]); // default plan selection
+  const [selectedPlan, setSelectedPlan] = useState(radios[1]); 
   const [phoneNumber, setPhoneNumber] = useState('');
   const [address, setAddress] = useState('');
   const [date, setDate] = useState('');
@@ -92,22 +92,43 @@ const Form = ({ price }) => {
       console.error('Error initializing Razorpay:', error);
     }
   };
-
+  const handleSubmit = async () => {
+    if (!phoneNumber || !address || !selectedPlan) {
+      console.error("Please fill in all the required fields");
+      return;
+    }
+    try {
+      const userdata = {
+        phone: phoneNumber,
+        address: address,
+        price: selectedPlan.price,
+      };
+      
+      const { data } = await axios.post(`http://localhost:4000/booking`, userdata);
+    
+      if (data) {
+        console.log("Booking successful:", data);
+      }
+    } catch (error) {
+      console.error("Error during booking:", error);
+    }
+  };
+  
+  
   return (
     <Layout>
       <div className="w-screen flex">
-        <div className="relative mx-auto mt-20 mb-20 max-w-screen-lg overflow-hidden rounded-t-xl bg-emerald-400/60 py-32 text-center shadow-xl shadow-gray-300">
-          <h1 className="mt-2 px-8 text-3xl font-bold text-white md:text-5xl">Book an appointment</h1>
-          <p className="mt-6 text-lg text-white">Get an appointment with our experienced accountants</p>
-          <img
-            className="absolute top-0 left-0 -z-10 h-full w-full object-cover"
-            src="https://images.unsplash.com/photo-1504672281656-e4981d70414b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-            alt=""
-          />
-        </div>
+      <div className="pointer-events-none relative hidden h-screen select-none bg-black md:block md:w-1/2">
+                            <div className="absolute bottom-0 z-10 px-8 text-white opacity-100">
+                                <p className="mb-8 text-black text-5xl font-semibold leading-10">Get Your Rooms Clean at best Price</p>
+                                
+                            </div>
+                            <img className="-z-1 absolute top-0 h-full w-full object-cover opacity-90" src="/Assets/Card/Header/first.jpg" alt="Header Image" />
+                        </div>
 
         <div className="mx-auto grid max-w-screen-lg px-6 pb-20">
-          <div className="max-w-md mx-auto px-4">
+          <form onSubmit={handleSubmit} className="max-w-md mx-auto px-4">
+            
             <h2 className="text-gray-800 font-medium">Find a plan</h2>
             <ul className="mt-6 space-y-3 flex gap-3">
               {radios.map((item, idx) => (
@@ -132,35 +153,34 @@ const Form = ({ price }) => {
                 </li>
               ))}
             </ul>
-          </div>
 
-          <div>
-            <label className="text-gray-600">Phone number</label>
-            <div className="relative mt-2 max-w-xs text-gray-500">
+            
+            <div className="mt-4">
+              <label className="text-gray-600">Phone Number</label>
               <input
                 required
                 type="number"
                 placeholder="+91 99999-99999"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
-                className="w-full pl-[4.5rem] pr-3 py-2 appearance-none bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                className="w-full mt-2 pl-4 pr-3 py-2 border rounded-lg shadow-sm focus:border-indigo-600"
               />
             </div>
-          </div>
-          <div>
-            <label className="text-gray-600">Address</label>
-            <div className="relative mt-2 max-w-xs text-gray-500">
+
+            
+            <div className="mt-4">
+              <label className="text-gray-600">Address</label>
               <input
                 required
-                type="String"
+                type="text"
                 placeholder="Your Address"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                className="w-full pl-[4.5rem] pr-3 py-2 appearance-none bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                className="w-full mt-2 pl-4 pr-3 py-2 border rounded-lg shadow-sm focus:border-indigo-600"
               />
             </div>
-          </div>
-          <div className="relative my-6">
+
+            <div className="relative my-6">
             <input
               id="id-date07"
               type="date"
@@ -176,15 +196,15 @@ const Form = ({ price }) => {
             </label>
           </div>
 
-          <button
-            onClick={handlePlace}
-            className="px-3 py-3 rounded-lg font-semibold text-sm duration-150 text-white bg-green-600 hover:bg-black hover:text-white active:bg-indigo-700"
-          >
-            Pay Now
-          </button>
+            <button
+              type="submit"
+              className="mt-6 px-3 py-3 rounded-lg font-semibold text-sm text-white bg-green-600 hover:bg-black"
+            >
+              Pay Now
+            </button>
+          </form>
         </div>
       </div>
-      <script src="https://unpkg.com/flowbite@1.5.2/dist/datepicker.js"></script>
     </Layout>
   );
 };
