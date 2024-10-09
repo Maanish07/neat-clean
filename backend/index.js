@@ -9,6 +9,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const mongodbURL = process.env.MONGODBURL;
