@@ -22,89 +22,91 @@ const Form = ({ price }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [address, setAddress] = useState('');
   const [date, setDate] = useState('');
+  const backendUrl = process.env.REACT_APP_BACKEND_API_URL;
 
   const today = new Date().toISOString().split('T')[0]; // for min date
 
-  const handlePlace = async (e) => {
-    e.preventDefault();
-    try {
-      const amount = selectedPlan.price;
-      const { data } = await axios.post(`http://localhost:4000/payment`, {
-        amount,
-      });
-      initPayment(data.data); // init Razorpay payment with the returned order data
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const handlePlace = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const amount = selectedPlan.price;
+  //     const { data } = await axios.post(`http://localhost:4000/payment`, {
+  //       amount,
+  //     });
+  //     initPayment(data.data); // init Razorpay payment with the returned order data
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
-  const initPayment = (data) => {
-    const options = {
-      key: 'rzp_test_y2KlnwPCrKqlwr', // consider moving this to a .env file
-      amount: data.amount,
-      currency: 'INR',
-      name: 'सफाई',
-      description: 'Test Transaction',
-      image: '/Assets/Hero/logo.png',
-      order_id: data.id,
-      handler: async (response) => {
-        try {
-          const verifyUrl = `http://localhost:4000/verify`;
-          const { data } = await axios.post(verifyUrl, {
-            payment_id: response.razorpay_payment_id,
-            order_id: response.razorpay_order_id,
-            signature: response.razorpay_signature,
-          });
+  // const initPayment = (data) => {
+  //   const options = {
+  //     key: 'rzp_test_y2KlnwPCrKqlwr', // consider moving this to a .env file
+  //     amount: data.amount,
+  //     currency: 'INR',
+  //     name: 'सफाई',
+  //     description: 'Test Transaction',
+  //     image: '/Assets/Hero/logo.png',
+  //     order_id: data.id,
+  //     handler: async (response) => {
+  //       try {
+  //         const verifyUrl = `http://localhost:4000/verify`;
+  //         const { data } = await axios.post(verifyUrl, {
+  //           payment_id: response.razorpay_payment_id,
+  //           order_id: response.razorpay_order_id,
+  //           signature: response.razorpay_signature,
+  //         });
 
           
-          const adminOrderEndpoint = `http://localhost:4000/booking`;
-          const orderData = {
-            phone: phoneNumber,
-            address : address,
-            plan: selectedPlan.name,
-            payment_id: response.razorpay_payment_id,
-            order_id: response.razorpay_order_id,
-            signature: response.razorpay_signature,
-            amount: selectedPlan.price,
-          };
-          const adminResponse = await axios.post(adminOrderEndpoint, orderData);
-          console.log('Admin Order Response:', adminResponse.data);
-        } catch (err) {
-          console.error('Payment Verification Error:', err);
-        }
-      },
-      prefill: {
-        name: '',
-        email: 'customer@example.com',
-        contact: phoneNumber,
-      },
-      notes: {
-        address: 'Customer Address',
-      },
-      theme: {
-        color: '#000',
-      },
-    };
-    try {
-      const razorpayInstance = new window.Razorpay(options);
-      razorpayInstance.open();
-    } catch (error) {
-      console.error('Error initializing Razorpay:', error);
-    }
-  };
-  const handleSubmit = async () => {
+  //         const adminOrderEndpoint = `http://localhost:4000/booking`;
+  //         const orderData = {
+  //           phone: phoneNumber,
+  //           address : address,
+  //           plan: selectedPlan.name,
+  //           payment_id: response.razorpay_payment_id,
+  //           order_id: response.razorpay_order_id,
+  //           signature: response.razorpay_signature,
+  //           amount: selectedPlan.price,
+  //         };
+  //         const adminResponse = await axios.post(adminOrderEndpoint, orderData);
+  //         console.log('Admin Order Response:', adminResponse.data);
+  //       } catch (err) {
+  //         console.error('Payment Verification Error:', err);
+  //       }
+  //     },
+  //     prefill: {
+  //       name: '',
+  //       email: 'customer@example.com',
+  //       contact: phoneNumber,
+  //     },
+  //     notes: {
+  //       address: 'Customer Address',
+  //     },
+  //     theme: {
+  //       color: '#000',
+  //     },
+  //   };
+  //   try {
+  //     const razorpayInstance = new window.Razorpay(options);
+  //     razorpayInstance.open();
+  //   } catch (error) {
+  //     console.error('Error initializing Razorpay:', error);
+  //   }
+  // };
+  const handleSubmit = async (e) => {
+    e.preventDefault()
     if (!phoneNumber || !address || !selectedPlan) {
       console.error("Please fill in all the required fields");
       return;
     }
     try {
       const userdata = {
-        phone: phoneNumber,
+        number: phoneNumber,
         address: address,
         price: selectedPlan.price,
       };
       
-      const { data } = await axios.post(`http://localhost:4000/booking`, userdata);
+      const { data } = await axios.post(`${backendUrl}/booking`, userdata);
     
       if (data) {
         console.log("Booking successful:", data);
@@ -130,7 +132,7 @@ const Form = ({ price }) => {
           <form onSubmit={handleSubmit} className="max-w-md mx-auto px-4">
             
             <h2 className="text-gray-800 font-medium">Find a plan</h2>
-            <ul className="mt-6 space-y-3 flex gap-3">
+            <ul className="mt-6  flex gap-3">
               {radios.map((item, idx) => (
                 <li key={idx}>
                   <label htmlFor={item.name} className="block relative">
@@ -180,7 +182,7 @@ const Form = ({ price }) => {
               />
             </div>
 
-            <div className="relative my-6">
+            {/* <div className="relative my-6">
             <input
               id="id-date07"
               type="date"
@@ -194,14 +196,16 @@ const Form = ({ price }) => {
             <label htmlFor="id-date07" className="absolute -top-2 left-2 z-[1] cursor-text px-2 text-xs text-slate-400">
               Date
             </label>
-          </div>
-
-            <button
+          </div> */}
+            <button type = "submit">
+              Submit
+            </button>
+            {/* <button
               type="submit"
               className="mt-6 px-3 py-3 rounded-lg font-semibold text-sm text-white bg-green-600 hover:bg-black"
             >
               Pay Now
-            </button>
+            </button> */}
           </form>
         </div>
       </div>
