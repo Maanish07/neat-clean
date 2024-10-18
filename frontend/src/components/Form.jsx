@@ -104,6 +104,7 @@ const Form = ({ price }) => {
         number: phoneNumber,
         address: address,
         price: selectedPlan.price,
+        bookingDate : date,
       };
       
       const { data } = await axios.post(`${backendUrl}/booking`, userdata);
@@ -128,7 +129,7 @@ const Form = ({ price }) => {
                             <img className="-z-1 absolute top-0 h-full w-full object-cover opacity-90" src="/Assets/Card/Header/first.jpg" alt="Header Image" />
                         </div>
 
-        <div className="mx-auto grid max-w-screen-lg px-6 pb-20">
+        <div className="mx-auto grid max-w-screen-lg px-6 pb-20 rounded">
           <form onSubmit={handleSubmit} className="max-w-md mx-auto px-4">
             
             <h2 className="text-gray-800 font-medium">Find a plan</h2>
@@ -182,7 +183,7 @@ const Form = ({ price }) => {
               />
             </div>
 
-            {/* <div className="relative my-6">
+            <div className="relative my-6">
             <input
               id="id-date07"
               type="date"
@@ -196,7 +197,7 @@ const Form = ({ price }) => {
             <label htmlFor="id-date07" className="absolute -top-2 left-2 z-[1] cursor-text px-2 text-xs text-slate-400">
               Date
             </label>
-          </div> */}
+          </div>
             <button type = "submit">
               Submit
             </button>

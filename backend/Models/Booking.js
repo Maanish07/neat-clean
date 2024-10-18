@@ -13,6 +13,10 @@ const BookingSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  bookingDate: {
+    type: String,
+    required: true,
+  },
 });
 
 const Booking = mongoose.model("Booking", BookingSchema);

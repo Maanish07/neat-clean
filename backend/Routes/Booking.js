@@ -5,14 +5,15 @@ const router = express.Router();
 
 router.post("/booking", async (req, res) => {
   try {
-    const { address, number, price } = req.body;
+    const { address, number, price, bookingDate } = req.body;
 
     const newBooking = new Booking({
       address,
       number,
       price,
+      bookingDate,
     });
-
+    console.log("booking", address, number, price, bookingDate);
     const saveBooking = await newBooking.save();
     console.log(saveBooking);
 
